@@ -51,14 +51,46 @@
         box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.15);
       }
       /* Keep links subtle and clean */
+      .links {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        justify-content: center;
+      }
       .links a {
         color: var(--accent);
         text-decoration: none;
-        margin: 0 12px;
-        font-size: 1.1em;
-        opacity: 0.95;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        opacity: 0.9;
+        transition: opacity 160ms ease;
+        font-size: 0.95rem;
       }
-      .links a:hover { text-decoration: underline; }
+      .links a:hover { 
+        opacity: 1;
+      }
+      .links a:hover svg {
+        animation: iconRotate 0.6s ease-in-out;
+      }
+      .links a svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        transition: transform 160ms ease;
+      }
+      @keyframes iconRotate {
+        0% { transform: rotate(0deg); }
+        50% { transform: rotate(12deg); }
+        100% { transform: rotate(0deg); }
+      }
+      .links a.focused {
+        background: rgba(0, 191, 255, 0.2);
+        border: 1px solid rgba(0, 191, 255, 0.4);
+        border-radius: 8px;
+        padding: 8px 12px;
+        margin: 0 -4px;
+      }
       /* Optional: visually hidden submit button so Enter works and it's accessible */
       .search button { position: absolute; left: -9999px; }
       
@@ -77,7 +109,7 @@
         cursor: pointer;
         padding: 8px;
         border-radius: 8px;
-        opacity: 0.6;
+        opacity: 0.3;
         transition: opacity 160ms ease, background-color 160ms ease;
       }
       .menu-btn:hover {
@@ -120,6 +152,13 @@
         transition: background-color 120ms ease;
         border-radius: 8px;
         margin: 4px 8px;
+        position: relative;
+      }
+      .menu-item .shortcut {
+        margin-left: auto;
+        font-size: 0.8rem;
+        color: #888;
+        opacity: 0.7;
       }
       .menu-item:hover {
         background: rgba(255, 255, 255, 0.08);
@@ -129,29 +168,360 @@
         height: 20px;
         flex-shrink: 0;
       }
+      
+      /* Weather widget styles */
+      .weather-container {
+        position: fixed;
+        top: 24px;
+        left: 24px;
+        z-index: 100;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 200px;
+      }
+      .weather-icon {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        opacity: 0.9;
+      }
+      .weather-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .weather-label {
+        font-size: 0.8rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .weather-condition {
+        font-size: 1rem;
+        color: #fff;
+        font-weight: 500;
+      }
+      .weather-temp {
+        font-size: 0.9rem;
+        color: #b8c0cc;
+      }
+      .weather-toggle {
+        cursor: pointer;
+        opacity: 0.5;
+        transition: opacity 160ms ease, transform 160ms ease;
+        font-size: 1.2rem;
+        color: #fff;
+        margin-left: 4px;
+      }
+      .weather-container:hover .weather-toggle {
+        opacity: 0.8;
+      }
+      .weather-toggle:active {
+        transform: scale(1.2);
+      }
+
+      /* Todo list styles */
+      .todo-container {
+        position: fixed;
+        left: 24px;
+        bottom: 24px;
+        width: 220px;
+        max-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .todo-header {
+        font-size: 0.85rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+      }
+      .todo-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        overflow-y: auto;
+        max-height: calc(70vh - 40px);
+        padding-right: 4px;
+      }
+      .todo-list::-webkit-scrollbar {
+        width: 4px;
+      }
+      .todo-list::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .todo-list::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+      }
+      .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        transition: all 160ms ease;
+      }
+      .todo-item:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+      .todo-checkbox {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        accent-color: var(--accent);
+        flex-shrink: 0;
+      }
+      .todo-text {
+        flex: 1;
+        font-size: 0.9rem;
+        color: #b8c0cc;
+        word-break: break-word;
+        transition: all 160ms ease;
+      }
+      .todo-item.completed .todo-text {
+        color: #666;
+        text-decoration: line-through;
+      }
+      .todo-delete {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #666;
+        opacity: 0;
+        transition: opacity 160ms ease;
+        font-size: 0.9rem;
+      }
+      .todo-item:hover .todo-delete {
+        opacity: 1;
+      }
+      .todo-input-container {
+        display: flex;
+        gap: 8px;
+      }
+      .todo-input {
+        flex: 1;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        color: #fff;
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 160ms ease;
+      }
+      .todo-input::placeholder {
+        color: #555;
+      }
+      .todo-input:focus {
+        border-color: rgba(0, 191, 255, 0.3);
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .todo-add-btn {
+        padding: 8px 12px;
+        background: rgba(0, 191, 255, 0.15);
+        border: 1px solid rgba(0, 191, 255, 0.3);
+        border-radius: 8px;
+        color: var(--accent);
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 160ms ease;
+      }
+      .todo-add-btn:hover {
+        background: rgba(0, 191, 255, 0.25);
+        border-color: rgba(0, 191, 255, 0.5);
+      }
+
+      /* Clock display styles */
+      .clock-container {
+        position: fixed;
+        top: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        z-index: 50;
+      }
+      .clock-date {
+        font-size: 0.85rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 500;
+      }
+      .clock-time {
+        font-size: 2.5rem;
+        font-weight: 300;
+        color: #fff;
+        letter-spacing: 2px;
+        font-family: 'Monaco', 'Menlo', monospace;
+        line-height: 1;
+      }
+      .clock-time-part {
+        display: inline-block;
+        min-width: 2.2em;
+        text-align: center;
+      }
+      .clock-separator {
+        display: inline-block;
+      }
+      .clock-tz {
+        font-size: 0.75rem;
+        color: #555;
+        letter-spacing: 0.5px;
+        font-weight: 400;
+      }
+      .clock-format-toggle {
+        font-size: 0.65rem;
+        color: #444;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: color 160ms ease;
+        margin-top: 2px;
+      }
+      .clock-format-toggle:hover {
+        color: #666;
+      }
+
+      /* Browser stats widget */
+      .stats-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 200px;
+        z-index: 50;
+      }
+      .stats-header {
+        font-size: 0.75rem;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+      }
+      .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        font-size: 0.85rem;
+        color: #b8c0cc;
+      }
+      .stat-label {
+        font-size: 0.75rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .stat-value {
+        font-weight: 500;
+        color: #fff;
+        font-family: 'Monaco', 'Menlo', monospace;
+      }
+      .stat-status {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-left: 8px;
+      }
+      .stat-status.online {
+        background: #00ff88;
+        box-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+      }
+      .stat-status.offline {
+        background: #ff4444;
+        box-shadow: 0 0 8px rgba(255, 68, 68, 0.4);
+      }
+
     </style>
   </head>
   <body>
+    <!-- Clock display -->
+    <div class="clock-container">
+      <div class="clock-date" id="clock-date">Tuesday, December 17</div>
+      <div class="clock-time">
+        <span class="clock-time-part" id="clock-hour">14</span><span class="clock-separator">:</span><span class="clock-time-part" id="clock-minute">32</span><span class="clock-separator">:</span><span class="clock-time-part" id="clock-second">45</span>
+      </div>
+      <div class="clock-tz">MTN | EST: <span id="clock-est">19:32</span></div>
+      <div class="clock-format-toggle" id="clockFormatToggle" title="Toggle between 24h and 12h">24h</div>
+    </div>
+
+    <!-- Browser stats -->
+    <div class="stats-container" id="statsContainer">
+      <div class="stats-header">System</div>
+      <div class="stat-item">
+        <span class="stat-label">Memory</span>
+        <span class="stat-value" id="statMemory">Loading...</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Network</span>
+        <span class="stat-value">Online <span class="stat-status online" id="networkStatus"></span></span>
+      </div>
+    </div>
+
+    <div class="todo-container">
+      <div class="todo-header">Todos</div>
+      <div class="todo-list" id="todoList"></div>
+      <div class="todo-input-container">
+        <input type="text" class="todo-input" id="todoInput" placeholder="Add a todo..." />
+        <button class="todo-add-btn" id="todoAddBtn">+</button>
+      </div>
+    </div>
+
+    <div class="weather-container" id="weatherContainer">
+      <svg class="weather-icon" id="weatherIcon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+      </svg>
+      <div class="weather-info">
+        <div class="weather-label" id="weatherLabel">Logan, Utah</div>
+        <div class="weather-condition" id="weatherCondition">Loading...</div>
+        <div class="weather-temp" id="weatherTemp"></div>
+      </div>
+      <div class="weather-toggle" id="weatherToggle" title="Toggle location">→</div>
+    </div>
+    
     <div class="menu-container">
       <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false">⋯</button>
       <nav class="menu-overlay" id="menuOverlay">
-        <a href="https://docs.google.com" class="menu-item" target="_blank" rel="noopener noreferrer">
+        <a href="https://docs.google.com" class="menu-item" data-key="d">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/>
           </svg>
           <span>Google Docs</span>
+          <span class="shortcut">D</span>
         </a>
-        <a href="https://sheets.google.com" class="menu-item" target="_blank" rel="noopener noreferrer">
+        <a href="https://sheets.google.com" class="menu-item" data-key="h">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/>
           </svg>
           <span>Google Sheets</span>
+          <span class="shortcut">H</span>
         </a>
-        <a href="https://slides.google.com" class="menu-item" target="_blank" rel="noopener noreferrer">
+        <a href="https://slides.google.com" class="menu-item" data-key="s">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M3 5v14h18V5H3zm14 12H7v-2h10v2z"/>
           </svg>
           <span>Google Slides</span>
+          <span class="shortcut">S</span>
         </a>
       </nav>
     </div>
@@ -161,15 +531,377 @@
       <button type="submit" aria-label="Search">Search</button>
     </form>
     <div class="links">
-      <a href="https://google.com">Google</a>
-      <a href="https://github.com">GitHub</a>
-      <a href="https://youtube.com">YouTube</a>
-      <a href="https://mail.google.com">Gmail</a>
+      <a href="https://google.com">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        <span>Google</span>
+      </a>
+      <a href="https://github.com/Git-Hub-Benjamin">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <a href="https://monkeytype.com" id="monkeytypeLink">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 3h18v2H3V3zm0 8h18v2H3v-2zm0-4h18v2H3V7zm0 8h18v2H3v-2zm0 4h18v2H3v-2z"/>
+        </svg>
+        <span>Monkeytype</span>
+      </a>
+      <a href="https://youtube.com">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+        <span>YouTube</span>
+      </a>
+      <a href="https://mail.google.com">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+        <span>Gmail</span>
+      </a>
     </div>
     
+
+    
     <script>
+      // Clock Management
+      let use24HourFormat = localStorage.getItem('vivaldoClockFormat') === '12h' ? false : true;
+      
+      function updateClock() {
+        // Get current time in Mountain Time
+        const now = new Date();
+        const mtnFormatter = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'America/Denver',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          weekday: 'long',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: !use24HourFormat
+        });
+        
+        const estFormatter = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'America/New_York',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: !use24HourFormat
+        });
+        
+        // Parse MTN time
+        const mtnParts = mtnFormatter.formatToParts(now);
+        const mtnDate = mtnParts.find(p => p.type === 'weekday').value + ', ' +
+                        mtnParts.find(p => p.type === 'month').value + ' ' +
+                        mtnParts.find(p => p.type === 'day').value;
+        const mtnHour = mtnParts.find(p => p.type === 'hour').value;
+        const mtnMinute = mtnParts.find(p => p.type === 'minute').value;
+        const mtnSecond = mtnParts.find(p => p.type === 'second').value;
+        
+        // Parse EST time
+        const estParts = estFormatter.formatToParts(now);
+        const estHour = estParts.find(p => p.type === 'hour').value;
+        const estMinute = estParts.find(p => p.type === 'minute').value;
+        
+        // Update DOM elements with smooth transitions
+        const hourEl = document.getElementById('clock-hour');
+        const minuteEl = document.getElementById('clock-minute');
+        const secondEl = document.getElementById('clock-second');
+        const dateEl = document.getElementById('clock-date');
+        const estEl = document.getElementById('clock-est');
+        
+        // Update without animation - just change the number
+        if (hourEl.textContent !== mtnHour) {
+          hourEl.textContent = mtnHour;
+        }
+        
+        if (minuteEl.textContent !== mtnMinute) {
+          minuteEl.textContent = mtnMinute;
+        }
+        
+        if (secondEl.textContent !== mtnSecond) {
+          secondEl.textContent = mtnSecond;
+        }
+        
+        dateEl.textContent = mtnDate;
+        estEl.textContent = estHour + ':' + estMinute;
+      }
+      
+      // Initialize clock immediately and update every second
+      updateClock();
+      setInterval(updateClock, 1000);
+      
+      // No transition needed for instant number changes
+      
+      // Clock format toggle
+      const clockFormatToggle = document.getElementById('clockFormatToggle');
+      clockFormatToggle.textContent = use24HourFormat ? '24h' : '12h';
+      clockFormatToggle.addEventListener('click', () => {
+        use24HourFormat = !use24HourFormat;
+        clockFormatToggle.textContent = use24HourFormat ? '24h' : '12h';
+        localStorage.setItem('vivaldoClockFormat', use24HourFormat ? '24h' : '12h');
+        updateClock();
+      });
+      
+      // Browser Stats Management
+      const statMemory = document.getElementById('statMemory');
+      // const statTabs = document.getElementById('statTabs');
+      const networkStatus = document.getElementById('networkStatus');
+      
+      // Update memory usage
+      function updateMemory() {
+        if (performance.memory) {
+          const usedMB = (performance.memory.usedJSHeapSize / 1048576).toFixed(1);
+          statMemory.textContent = `${usedMB} MB (JS)`;
+        } else {
+          statMemory.textContent = 'N/A';
+        }
+      }
+      
+      // Update tab count - estimate total browser tabs using performance API and heuristics
+      // function updateTabCount() {
+      //   try {
+      //     // Get all tabs that have been opened in this browser session
+      //     const allTabsCount = parseInt(localStorage.getItem('vivaldoAllTabsCount')) || 1;
+      //     // Get new tab pages specifically
+      //     const newTabPages = parseInt(localStorage.getItem('vivaldoTabCount')) || 1;
+      //     
+      //     // If we have performance.memory, use that as a proxy for rough tab count estimate
+      //     // Each tab typically uses 30-100MB, so total memory / 50 = approximate tab count
+      //     if (performance.memory && performance.memory.usedJSHeapSize > 0) {
+      //       const estimatedTabs = Math.max(1, Math.ceil(performance.memory.jsHeapSizeLimit / 100000000)); // rough estimate
+      //       statTabs.textContent = estimatedTabs;
+      //     } else {
+      //       // Fallback: show new tab pages count
+      //       statTabs.textContent = newTabPages;
+      //     }
+      //   } catch (e) {
+      //     statTabs.textContent = '?';
+      //   }
+      // }
+      // 
+      // // Track total tabs across browser session
+      // function trackAllTabs() {
+      //   try {
+      //     let allCount = parseInt(localStorage.getItem('vivaldoAllTabsCount')) || 0;
+      //     allCount++;
+      //     localStorage.setItem('vivaldoAllTabsCount', allCount);
+      //     updateTabCount();
+      //   } catch (e) {
+      //     // localStorage might be disabled
+      //   }
+      // }
+      // 
+      // // Also keep track of new tab pages specifically
+      // function trackTabCount() {
+      //   try {
+      //     let count = parseInt(localStorage.getItem('vivaldoTabCount')) || 0;
+      //     count++;
+      //     localStorage.setItem('vivaldoTabCount', count);
+      //     
+      //     window.addEventListener('beforeunload', () => {
+      //       let current = parseInt(localStorage.getItem('vivaldoTabCount')) || 1;
+      //       localStorage.setItem('vivaldoTabCount', Math.max(0, current - 1));
+      //     });
+      //   } catch (e) {
+      //     // localStorage might be disabled
+      //   }
+      // }
+      // 
+      // // Listen for storage changes from other tabs
+      // window.addEventListener('storage', (e) => {
+      //   if (e.key === 'vivaldoTabCount' || e.key === 'vivaldoAllTabsCount') {
+      //     updateTabCount();
+      //   }
+      // });
+      
+      // Network status with more reliable detection
+      function updateNetworkStatus() {
+        const isOnline = navigator.onLine;
+        networkStatus.className = isOnline ? 'stat-status online' : 'stat-status offline';
+        // Try to verify with a fetch if online
+        if (isOnline) {
+          fetch('https://www.google.com/generate_204', { method: 'HEAD', mode: 'no-cors' })
+            .catch(() => {
+              networkStatus.className = 'stat-status offline';
+            });
+        }
+      }
+      
+      window.addEventListener('online', updateNetworkStatus);
+      window.addEventListener('offline', updateNetworkStatus);
+      
+      // Check network status periodically (every 5 seconds)
+      setInterval(updateNetworkStatus, 5000);
+      
+      // Initial updates
+      updateMemory();
+      // trackAllTabs();
+      // updateTabCount();
+      // trackTabCount();
+      updateNetworkStatus();
+      
+      // Update memory every 2 seconds
+      setInterval(updateMemory, 2000);
+
+      // Todo List Management
+      const todoList = document.getElementById('todoList');
+      const todoInput = document.getElementById('todoInput');
+      const todoAddBtn = document.getElementById('todoAddBtn');
+      let todos = JSON.parse(localStorage.getItem('vivaldoTodos')) || [];
+
+      function saveTodos() {
+        localStorage.setItem('vivaldoTodos', JSON.stringify(todos));
+      }
+
+      function renderTodos() {
+        todoList.innerHTML = '';
+        todos.forEach((todo, index) => {
+          const todoItem = document.createElement('div');
+          todoItem.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+          
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.className = 'todo-checkbox';
+          checkbox.checked = todo.completed;
+          checkbox.addEventListener('change', () => {
+            todos[index].completed = checkbox.checked;
+            saveTodos();
+            renderTodos();
+          });
+          
+          const text = document.createElement('div');
+          text.className = 'todo-text';
+          text.textContent = todo.text;
+          
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'todo-delete';
+          deleteBtn.innerHTML = '✕';
+          deleteBtn.addEventListener('click', () => {
+            todos.splice(index, 1);
+            saveTodos();
+            renderTodos();
+          });
+          
+          todoItem.appendChild(checkbox);
+          todoItem.appendChild(text);
+          todoItem.appendChild(deleteBtn);
+          todoList.appendChild(todoItem);
+        });
+      }
+
+      function addTodo() {
+        const text = todoInput.value.trim();
+        if (text) {
+          todos.push({ text, completed: false });
+          todoInput.value = '';
+          saveTodos();
+          renderTodos();
+          todoInput.focus();
+        }
+      }
+
+      todoAddBtn.addEventListener('click', addTodo);
+      todoInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') addTodo();
+      });
+
+      renderTodos();
+
       const menuBtn = document.getElementById('menuBtn');
       const menuOverlay = document.getElementById('menuOverlay');
+      const searchInput = document.querySelector('.search input[type="text"]');
+      const monkeytypeLink = document.getElementById('monkeytypeLink');
+      let monkeytypeFocused = false;
+      const weatherIcon = document.getElementById('weatherIcon');
+      const weatherCondition = document.getElementById('weatherCondition');
+      const weatherTemp = document.getElementById('weatherTemp');
+      const weatherLabel = document.getElementById('weatherLabel');
+      const weatherToggle = document.getElementById('weatherToggle');
+      
+      let currentLocation = 'logan'; // 'logan' or 'bethel'
+      const locations = {
+        logan: { name: 'Logan, Utah', lat: 41.7335, lon: -111.8362 },
+        bethel: { name: 'Bethel, CT', lat: 41.5534, lon: -73.4731 }
+      };
+      
+      // Fetch weather for a specific location
+      async function fetchWeather() {
+        const loc = locations[currentLocation];
+        try {
+          const response = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=weather_code,temperature_2m,relative_humidity_2m&temperature_unit=fahrenheit&timezone=auto`
+          );
+          const data = await response.json();
+          const current = data.current;
+          
+          const weatherCode = current.weather_code;
+          const temp = Math.round(current.temperature_2m);
+          
+          weatherTemp.textContent = `${temp}°F`;
+          weatherLabel.textContent = loc.name;
+          
+          let condition = 'Clear';
+          let iconSvg = getSunIcon();
+          
+          if (weatherCode === 0 || weatherCode === 1) {
+            condition = 'Sunny';
+            iconSvg = getSunIcon();
+          } else if (weatherCode === 2 || weatherCode === 3) {
+            condition = 'Cloudy';
+            iconSvg = getCloudIcon();
+          } else if (weatherCode >= 45 && weatherCode <= 48) {
+            condition = 'Foggy';
+            iconSvg = getCloudIcon();
+          } else if (weatherCode >= 51 && weatherCode <= 67 || weatherCode >= 80 && weatherCode <= 82) {
+            condition = 'Rainy';
+            iconSvg = getRainIcon();
+          } else if (weatherCode >= 71 && weatherCode <= 77 || weatherCode === 85 || weatherCode === 86) {
+            condition = 'Snowy';
+            iconSvg = getSnowIcon();
+          } else if (weatherCode >= 80 && weatherCode <= 82 || weatherCode >= 90 && weatherCode <= 99) {
+            condition = 'Rainy';
+            iconSvg = getRainIcon();
+          }
+          
+          weatherCondition.textContent = condition;
+          weatherIcon.innerHTML = iconSvg;
+        } catch (error) {
+          console.error('Error fetching weather:', error);
+          weatherCondition.textContent = 'Unavailable';
+          weatherTemp.textContent = '';
+        }
+      }
+      
+      function getSunIcon() {
+        return `<path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 19.0711L5.63604 16.9497ZM23 11V13H20V11H23ZM4 11V13H1V11H4Z" fill="currentColor"/>`;
+      }
+      
+      function getCloudIcon() {
+        return `<path d="M19.35 10.04C18.67 6.59 15.64 4 12 4c-1.48 0-2.85.43-4.01 1.17l1.46 1.46C10.21 6.23 11.08 6 12 6c3.04 0 5.5 2.46 5.5 5.5v.5H19c2.05 0 3.71 1.66 3.71 3.71 0 2.05-1.66 3.71-3.71 3.71H5c-2.05 0-3.71-1.66-3.71-3.71 0-1.63 1.08-3.07 2.58-3.53.4-1.45 1.69-2.54 3.23-2.54.38 0 .74.06 1.1.16L7.07 5.07C5.72 5.56 4.6 6.43 3.97 7.57 2.58 7.91 1.5 9.3 1.5 11c0 2.49 2.01 4.5 4.5 4.5h13.5c2.89 0 5.24-2.35 5.24-5.24.01-2.6-2.1-4.72-4.76-4.72z" fill="currentColor"/>`;
+      }
+      
+      function getRainIcon() {
+        return `<path d="M19.35 10.04C18.67 6.59 15.64 4 12 4c-1.48 0-2.85.43-4.01 1.17l1.46 1.46C10.21 6.23 11.08 6 12 6c3.04 0 5.5 2.46 5.5 5.5v.5H19c2.05 0 3.71 1.66 3.71 3.71 0 2.05-1.66 3.71-3.71 3.71H5c-2.05 0-3.71-1.66-3.71-3.71 0-1.63 1.08-3.07 2.58-3.53.4-1.45 1.69-2.54 3.23-2.54.38 0 .74.06 1.1.16L7.07 5.07C5.72 5.56 4.6 6.43 3.97 7.57 2.58 7.91 1.5 9.3 1.5 11c0 2.49 2.01 4.5 4.5 4.5h13.5c2.89 0 5.24-2.35 5.24-5.24.01-2.6-2.1-4.72-4.76-4.72zM8 19h2v2H8v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z" fill="currentColor"/>`;
+      }
+      
+      function getSnowIcon() {
+        return `<path d="M12.5 2v3h-1V2h1zM4.22 4.22l2.12 2.12l-.71.71L3.51 3.93l.71-.71zm15.56 0l.71.71-2.12 2.12-.71-.71 2.12-2.12zM2 11.5h3v1H2v-1zm17 0h3v1h-3v-1zM4.22 19.78l2.12-2.12.71.71-2.12 2.12-.71-.71zm15.56 0l-.71.71-2.12-2.12.71-.71 2.12 2.12zM12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zm0 1c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM12.5 22v-3h-1v3h1z" fill="currentColor"/>`;
+      }
+      
+      // Fetch weather on page load
+      fetchWeather();
+      
+      // Refresh weather every 10 minutes
+      setInterval(fetchWeather, 600000);
+      
+      // Toggle location on arrow click
+      weatherToggle.addEventListener('click', () => {
+        currentLocation = currentLocation === 'logan' ? 'bethel' : 'logan';
+        fetchWeather();
+      });
       
       menuBtn.addEventListener('click', () => {
         const isActive = menuOverlay.classList.toggle('active');
@@ -181,6 +913,73 @@
         if (!e.target.closest('.menu-container')) {
           menuOverlay.classList.remove('active');
           menuBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      
+      // Keyboard listener for shortcuts
+      document.addEventListener('keydown', (e) => {
+        const key = e.key.toLowerCase();
+        
+        // 'G' to toggle menu
+        if (key === 'g' && e.target === document.body) {
+          e.preventDefault();
+          const isActive = menuOverlay.classList.toggle('active');
+          menuBtn.setAttribute('aria-expanded', isActive);
+        }
+        
+        // Menu item shortcuts (D, S, H) when menu is open
+        if (menuOverlay.classList.contains('active') && (key === 'd' || key === 's' || key === 'h')) {
+          e.preventDefault();
+          const menuItem = document.querySelector(`.menu-item[data-key="${key}"]`);
+          if (menuItem) {
+            menuItem.click();
+            menuOverlay.classList.remove('active');
+            menuBtn.setAttribute('aria-expanded', 'false');
+          }
+        }
+        
+        // 'T' to focus search bar
+        if (key === 't' && e.target === document.body) {
+          e.preventDefault();
+          searchInput.focus();
+        }
+        
+        // 'O' to focus todo input
+        if (key === 'o' && e.target === document.body) {
+          e.preventDefault();
+          todoInput.focus();
+        }
+        
+        // 'M' to focus monkeytype link
+        if (key === 'm' && e.target === document.body) {
+          e.preventDefault();
+          if (monkeytypeFocused) {
+            // If already focused, open the link
+            monkeytypeLink.click();
+            monkeytypeFocused = false;
+            monkeytypeLink.classList.remove('focused');
+          } else {
+            // First time, just focus/highlight
+            monkeytypeFocused = true;
+            monkeytypeLink.classList.add('focused');
+          }
+        }
+        
+        // 'W' to cycle weather locations
+        if (key === 'w' && e.target === document.body) {
+          e.preventDefault();
+          currentLocation = currentLocation === 'logan' ? 'bethel' : 'logan';
+          fetchWeather();
+        }
+        
+        // Close overlays/focus with Escape key
+        if (e.key === 'Escape') {
+          monkeytypeFocused = false;
+          monkeytypeLink.classList.remove('focused');
+          if (menuOverlay.classList.contains('active')) {
+            menuOverlay.classList.remove('active');
+            menuBtn.setAttribute('aria-expanded', 'false');
+          }
         }
       });
     </script>
